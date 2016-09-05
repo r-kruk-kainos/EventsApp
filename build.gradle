@@ -1,0 +1,29 @@
+group 'org'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'application'
+
+sourceCompatibility = 1.5
+
+repositories {
+    mavenCentral()
+}
+
+project.ext {
+    dropwizardVersion = '0.9.3'
+    configPath = './src/main/resources/app_config.yml'
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile (
+       'io.dropwizard:dropwizard-core:' + dropwizardVersion,
+       'com.github.dirkraft.dropwizard-file-assets:dropwizard-file-assets:0.0.2',
+    )
+}
+
+
+mainClassName = "TestApplication"
+run{
+    args 'server', configPath
+}
