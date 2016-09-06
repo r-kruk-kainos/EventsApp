@@ -1,12 +1,27 @@
 group 'org'
 version '1.0-SNAPSHOT'
 
+apply plugin: 'java'
 apply plugin: 'application'
+apply plugin: 'eu.appsatori.fatjar'
 
 sourceCompatibility = 1.5
+mainClassName = "EventsApplication"
 
 repositories {
     mavenCentral()
+}
+
+
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven { url 'http://dl.bintray.com/vermeulen-mp/gradle-plugins' }
+    }
+    dependencies {
+        classpath 'eu.appsatori:gradle-fatjar-plugin:0.3'
+    }
 }
 
 project.ext {
@@ -15,15 +30,38 @@ project.ext {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
     compile (
-       'io.dropwizard:dropwizard-core:' + dropwizardVersion,
-       'com.github.dirkraft.dropwizard-file-assets:dropwizard-file-assets:0.0.2',
+        'io.dropwizard:dropwizard-core:' + dropwizardVersion,
+        'com.github.dirkraft.dropwizard-file-assets:dropwizard-file-assets:0.0.2',
+        'io.dropwizard:dropwizard-db:' + dropwizardVersion,
+        'io.dropwizard:dropwizard-hibernate:' + dropwizardVersion,
+        'io.dropwizard:dropwizard-migrations:' + dropwizardVersion,
     )
+
+    compile 'org.postgresql:postgresql:9.4.1208.jre7'
+
+    /* Dropwizard-Guice */
+    compile group: 'com.hubspot.dropwizard', name: 'dropwizard-guice', version: '0.8.4.0'
 }
 
+// Configure the fatJar task
+fatJar {
+    classifier 'fat'
 
-mainClassName = "TestApplication"
+    // We need to add the main class to the manifest, otherwise the JAR won't start.
+    manifest {
+        attributes 'Main-Class': mainClassName
+    }
+
+    // We have to exclude signature files from the fat JAR, otherwise we'll get invalid signature file digest errors.
+    exclude 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/*.SF'
+}
+
+task migrate(type: JavaExec, dependsOn: fatJar) {
+    main = "-jar"
+    args = ["./build/libs/" + rootProject.name + "-" + version + "-fat.jar", "db", "migrate", configPath]
+}
+
 run{
     args 'server', configPath
 }

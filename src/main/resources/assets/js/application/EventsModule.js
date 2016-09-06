@@ -1,3 +1,3 @@
 define(['angular', 'uiRouter'], function (angular) {
-    return angular.module("TestModule", ['ui.router'])
+    return angular.module("EventsModule", ['ui.router'])
 });
