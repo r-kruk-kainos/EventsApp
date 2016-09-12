@@ -5,7 +5,6 @@ apply plugin: 'java'
 apply plugin: 'application'
 apply plugin: 'eu.appsatori.fatjar'
 
-sourceCompatibility = 1.5
 mainClassName = "EventsApplication"
 
 repositories {
@@ -36,9 +35,12 @@ dependencies {
         'io.dropwizard:dropwizard-db:' + dropwizardVersion,
         'io.dropwizard:dropwizard-hibernate:' + dropwizardVersion,
         'io.dropwizard:dropwizard-migrations:' + dropwizardVersion,
+        'io.dropwizard:dropwizard-auth:' + dropwizardVersion,
     )
 
     compile 'org.postgresql:postgresql:9.4.1208.jre7'
+
+    compileOnly "org.projectlombok:lombok:1.16.10"
 
     /* Dropwizard-Guice */
     compile group: 'com.hubspot.dropwizard', name: 'dropwizard-guice', version: '0.8.4.0'

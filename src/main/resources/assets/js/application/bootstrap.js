@@ -1,11 +1,11 @@
 define([
     'angular',
-    'application/EventsModule',
-    'application/EventsModuleConfig'
+    'application/eventsModule',
+    'application/eventsModuleConfig'
 ], function (angular) {
     'use strict';
 
     angular.element().ready(function () {
-        angular.bootstrap(document, ['EventsModule']);
+        angular.bootstrap(document, ['eventsModule']);
     });
 });

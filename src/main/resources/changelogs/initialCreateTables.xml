@@ -22,7 +22,7 @@
 
             <column name="admin" type="boolean" defaultValueBoolean="false"/>
 
-            <column name="activation_code" type="varchar(255)">
+            <column name="access_token" type="varchar(255)">
                 <constraints nullable="true"/>
             </column>
         </createTable>

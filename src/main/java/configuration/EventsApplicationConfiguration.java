@@ -1,6 +1,7 @@
 package configuration;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.collect.ImmutableList;
 import io.dropwizard.Configuration;
 
 import javax.validation.Valid;
@@ -14,6 +15,10 @@ public class EventsApplicationConfiguration extends Configuration {
     @NotNull
     @JsonProperty("database")
     private DataSourceFactory database = new DataSourceFactory();
+
+    @Valid
+    @JsonProperty
+    private ImmutableList<String> allowedGrantTypes;
 
     public DataSourceFactory getDataSourceFactory() {
         return database;
